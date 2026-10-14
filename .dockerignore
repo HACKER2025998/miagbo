@@ -1,0 +1,15 @@
+.git
+.venv
+.env
+node_modules
+mobile/node_modules
+mobile/.expo
+__pycache__
+*.sqlite3
+media
+staticfiles
+.coverage
+htmlcov
+test-results
+playwright-report
+backups

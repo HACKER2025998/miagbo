@@ -1,0 +1,56 @@
+services: # Déclarer l'infrastructure complète, sans Kubernetes inutile au MVP.
+  db: # Conserver données relationnelles et index géographique.
+    image: postgis/postgis:16-3.5 # Utiliser une image PostgreSQL munie de PostGIS.
+    environment: # Lire le secret SQL dans .env, jamais dans le code.
+      POSTGRES_DB: ${DB_NAME:-miagbo} # Nommer la base métier.
+      POSTGRES_USER: ${DB_USER:-miagbo} # Créer le compte initial de migration.
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Configurez DB_PASSWORD} # Refuser un démarrage sans secret.
+    volumes: [postgres_data:/var/lib/postgresql/data] # Préserver les données entre recréations de conteneur.
+    healthcheck: # Attendre une base réellement disponible avant les migrations.
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"'] # Vérifier la disponibilité avec les identifiants du conteneur.
+      interval: 5s # Vérifier régulièrement le démarrage de PostgreSQL.
+      timeout: 3s # Borner l'attente de la sonde.
+      retries: 20 # Tolérer la première initialisation du volume.
+    restart: unless-stopped # Reprendre après un incident ou redémarrage de l'hôte.
+  redis: # Partager les limites de débit entre les processus API.
+    image: redis:7-alpine # Utiliser un cache léger.
+    command: [redis-server, --save, '', --appendonly, 'no'] # Traiter Redis comme cache éphémère, sans secret métier persistant.
+    restart: unless-stopped # Rétablir le cache après incident.
+  api: # Exposer le serveur uniquement au réseau interne Compose.
+    build: . # Construire le code et ses dépendances verrouillées.
+    env_file: .env # Charger les secrets locaux de l'exploitant.
+    environment: # Appliquer les valeurs propres à la production conteneurisée.
+      DEBUG: '0' # Interdire les pages détaillées d'erreur.
+      DB_HOST: db # Résoudre PostgreSQL sur le réseau interne.
+      REDIS_URL: redis://redis:6379/0 # Partager les throttles entre workers.
+      TRUST_PROXY: '1' # Accepter le protocole TLS déclaré seulement par Caddy interne.
+    volumes: [media_data:/app/media, static_data:/app/staticfiles] # Partager médias et ressources avec le proxy.
+    depends_on: # Attendre les composants critiques.
+      db: {condition: service_healthy} # Ne pas lancer migrate avant la disponibilité SQL.
+      redis: {condition: service_started} # Disposer du cache de sécurité.
+    restart: unless-stopped # Relancer Gunicorn après une défaillance.
+  worker: # Exécuter les échéances sans ralentir les requêtes interactives.
+    build: . # Utiliser le même logiciel versionné que l'API.
+    command: [scripts/worker.sh] # Lancer les tâches planifiées sans serveur web.
+    env_file: .env # Partager les paramètres des fournisseurs.
+    environment: # Pointer les services internes correctement.
+      DEBUG: '0' # Appliquer la sécurité production au worker.
+      DB_HOST: db # Résoudre la base depuis le réseau Compose.
+      REDIS_URL: redis://redis:6379/0 # Utiliser le cache partagé.
+    depends_on: # Retarder le worker jusqu'au démarrage API.
+      api: {condition: service_started} # Les retries de commande couvrent la fin des migrations.
+    restart: unless-stopped # Reprendre les échéances après incident.
+  caddy: # Terminer HTTPS et servir les fichiers publics.
+    image: caddy:2-alpine # Obtenir les certificats TLS automatiquement pour un domaine réel.
+    environment: # Transmettre le nom de domaine du déploiement.
+      DOMAIN: ${DOMAIN:?Configurez DOMAIN} # Exiger un hôte déclaré par l'exploitant.
+    ports: ['80:80', '443:443'] # Ouvrir uniquement le proxy TLS au public.
+    volumes: ['./infra/Caddyfile:/etc/caddy/Caddyfile:ro', 'media_data:/srv/media:ro', 'static_data:/srv/static:ro', 'caddy_data:/data', 'caddy_config:/config'] # Séparer ressources en lecture seule et certificats persistants.
+    depends_on: [api] # Router les requêtes vers le service interne.
+    restart: unless-stopped # Rétablir l'entrée HTTPS après incident.
+volumes: # Centraliser les stockages durables administrés par Docker.
+  postgres_data: {} # Conserver la base métier.
+  media_data: {} # Conserver les photos contrôlées.
+  static_data: {} # Conserver les ressources collectées.
+  caddy_data: {} # Conserver les certificats TLS.
+  caddy_config: {} # Conserver les états du proxy.

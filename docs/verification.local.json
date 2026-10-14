@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-14",
+  "backend_sqlite": {
+    "tests": 106,
+    "result": "OK"
+  },
+  "backend_postgresql_postgis": {
+    "tests": 106,
+    "result": "OK"
+  },
+  "targeted_registration_after_schema_alignment": {
+    "tests": 2,
+    "result": "OK"
+  },
+  "backend_coverage_percent": 86,
+  "browser": {
+    "tests": 10,
+    "result": "OK",
+    "projects": [
+      "Chromium desktop",
+      "Chromium format iPhone 13"
+    ]
+  },
+  "openapi": "validated without warnings",
+  "mobile": {
+    "typescript": "OK",
+    "android_bundle": "exported",
+    "ios_bundle": "exported",
+    "signed_binaries": "not built",
+    "stores": "not published"
+  },
+  "docker": {
+    "build": "OK",
+    "django_deploy_check": "OK",
+    "gunicorn_smoke": "HTTP 200 on health, root and static JS",
+    "caddy_validate": "valid configuration"
+  },
+  "restore": {
+    "vendors": 6,
+    "products": 6,
+    "reviews": 3,
+    "postgis": "3.5.2"
+  },
+  "production_deployment": "not performed",
+  "real_external_services": "not validated with project credentials"
+}

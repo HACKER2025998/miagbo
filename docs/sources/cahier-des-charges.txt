@@ -1,0 +1,568 @@
+SOURCE : Cahier de charges techniques MIAGBO.docx
+
+PARTIE : word/document.xml
+
+CAHIER DES CHARGES TECHNIQUE
+Conception & Développement de l'application
+MIAGBO
+Plateforme mobile (Android & iOS) et Web de mise en relation
+par géolocalisation entre clients et commerçants de proximité
+Document
+Cahier des charges technique (CDC)
+Projet
+Miagbo – App mobile & plateforme web
+Version
+1.0
+Date
+17 septembre 2026
+Statut
+Version de travail — à valider par le maître d'ouvrage
+Diffusion
+Équipe projet, direction technique, prestataires
+
+Sommaire
+
+1. Présentation du projet1
+1.1. Contexte et problématique1
+1.2. Solution proposée1
+1.3. Objectifs du projet1
+1.4. Public cible1
+2. Périmètre du projet1
+2.1. Plateformes concernées1
+2.2. Dans le périmètre (Phase 1 – MVP)1
+2.3. Hors périmètre (Phases ultérieures)1
+3. Spécifications fonctionnelles1
+3.1. Interface Client (mobile & web)1
+3.2. Interface Vendeur (Espace Pro)1
+3.3. Back-Office Administration1
+4. Modèles d'abonnement vendeurs1
+4.1. Grille tarifaire1
+4.2. Détail des offres et avantages1
+Offre Découverte — Gratuite (1 mois)1
+Offre Essentiel — 3 mois à 1 500 FCFA1
+Offre Croissance — 6 mois à 3 000 FCFA1
+Offre Performance — 12 mois à 5 000 FCFA1
+4.3. Règles de gestion des abonnements1
+4.4. Impacts techniques1
+5. Architecture technique1
+5.1. Vue d'ensemble de l'architecture1
+5.2. Schéma d'architecture logique1
+5.3. Stack technologique proposée1
+5.4. Modèle de données (extrait)1
+5.5. Spécifications de l'API1
+6. Exigences non fonctionnelles1
+6.1. Sécurité et protection des données1
+7. Gestion de projet1
+7.1. Méthodologie1
+7.2. Équipe projet type1
+7.3. Planning prévisionnel (indicatif)1
+7.4. Livrables attendus1
+8. Environnements et intégration continue1
+9. Tests et recette1
+10. Déploiement et maintenance1
+10.1. Mise en production1
+10.2. Maintenance et support1
+11. Feuille de route (évolutions futures)1
+12. Annexes1
+12.1. Glossaire1
+12.2. Références du document1
+
+
+1. Présentation du projet
+1.1. Contexte et problématique
+Dans les grandes villes, la découverte de bons points de restauration de proximité (restaurants, maquis, vendeurs de rue, boutiques de quartier) reste difficile, en particulier pour les personnes nouvellement arrivées dans un quartier ou en déplacement. Trois obstacles principaux ont été identifiés :
+Dépendance au bouche-à-oreille et aux réseaux sociaux, sans géolocalisation précise ni mise à jour fiable.
+Invisibilité de nombreux commerces informels sur les outils cartographiques classiques (Google Maps, etc.).
+Perte d'opportunités commerciales pour des vendeurs pourtant situés à proximité immédiate de clients potentiels.
+1.2. Solution proposée
+Miagbo est une plateforme numérique (application mobile Android/iOS + plateforme web) de mise en relation directe, par géolocalisation, entre des clients en recherche active d'un produit de restauration et des vendeurs de proximité. L'objectif est de réduire la distance physique et numérique entre l'offre et la demande locale, via une recherche géolocalisée par rayon paramétrable.
+1.3. Objectifs du projet
+Objectif métier : augmenter la visibilité et le chiffre d'affaires des petits commerçants et vendeurs informels.
+Objectif utilisateur : permettre à tout client de trouver en quelques secondes une offre de restauration proche de sa position.
+Objectif technique : livrer une plateforme mobile et web robuste, scalable, sécurisée et évolutive, s'appuyant sur une architecture API centralisée.
+Objectif de gouvernance : fournir aux administrateurs des outils de modération, de supervision et d'analyse de l'usage de la plateforme.
+1.4. Public cible
+Cible
+Description
+Clients particuliers
+Toute personne cherchant un produit de restauration (repas, gâteaux, boissons, encas) à proximité de sa position, via mobile ou web.
+Vendeurs de proximité
+Restaurants, maquis, petites boutiques, vendeurs ambulants ou informels souhaitant être visibles et référencés.
+Administrateurs
+Équipe interne chargée de la modération, de la gestion des comptes et du pilotage de la plateforme.
+
+2. Périmètre du projet
+2.1. Plateformes concernées
+Application mobile native ou cross-platform pour Android et iOS.
+Plateforme web responsive pour les clients (accès navigateur).
+Espace web dédié « Vendeur / Espace Pro » pour la gestion des commerces.
+Back-office web d'administration.
+2.2. Dans le périmètre (Phase 1 – MVP)
+Inscription/connexion client et vendeur.
+Recherche géolocalisée par mot-clé et rayon de distance.
+Fiche vendeur (catalogue, horaires, localisation, avis).
+Espace vendeur : gestion du catalogue, des horaires et du statut ouvert/fermé.
+Back-office : modération des comptes, des avis et statistiques de base.
+2.3. Hors périmètre (Phases ultérieures)
+Module d'itinéraire et guidage GPS intégré.
+Commande en ligne et réservation à distance.
+Paiement intégré dans l'application.
+Système de promotions et d'offres sponsorisées.
+
+3. Spécifications fonctionnelles
+3.1. Interface Client (mobile & web)
+Réf.
+Fonctionnalité
+Description
+F-C1
+Authentification
+Inscription/connexion par numéro de téléphone, e-mail ou réseau social (OAuth2). Réinitialisation de mot de passe par OTP/e-mail.
+F-C2
+Recherche par mot-clé
+Recherche libre (ex. « gâteaux », « ayimolou », « khom », « boisson ») avec suggestions et historique.
+F-C3
+Filtrage géographique
+Filtre par rayon paramétrable (500 m, 1 km, 2 km, 5 km…) autour de la position de l'utilisateur.
+F-C4
+Filtrage par disponibilité
+Filtre « ouvert actuellement » basé sur le statut temps réel du vendeur.
+F-C5
+Carte interactive
+Vue carte (marqueurs géolocalisés) et vue liste des vendeurs, avec bascule entre les deux.
+F-C6
+Fiche vendeur
+Catalogue de produits, photos, description, horaires, localisation, distance, bouton itinéraire externe.
+F-C7
+Avis & notation
+Dépôt d'avis (texte + note 1 à 5 étoiles), consultation des avis existants, signalement d'avis abusif.
+F-C8
+Favoris
+Ajout de vendeurs en favoris pour un accès rapide.
+F-C9
+Notifications
+Notifications push (nouveaux vendeurs à proximité, réponses aux avis, alertes système).
+
+3.2. Interface Vendeur (Espace Pro)
+Réf.
+Fonctionnalité
+Description
+F-V1
+Enrôlement
+Création de compte commerçant : nom du commerce, description, contact, pièces justificatives éventuelles.
+F-V2
+Gestion du catalogue
+Ajout/modification/suppression de produits (nom, photo, description, prix, catégorie).
+F-V3
+Horaires d'ouverture
+Définition des jours et plages horaires d'ouverture/fermeture récurrentes et exceptions (jours fériés).
+F-V4
+Géolocalisation du point de vente
+Capture GPS précise du point de vente depuis le smartphone, ajustement manuel sur carte.
+F-V5
+Statut temps réel
+Bascule manuelle ou automatique (selon horaires) du statut « Ouvert » /« Fermé ».
+F-V6
+Tableau de bord vendeur
+Statistiques simples : vues de la fiche, nombre d'avis, note moyenne.
+F-V7
+Gestion des avis reçus
+Consultation et réponse aux avis clients.
+
+3.3. Back-Office Administration
+Réf.
+Fonctionnalité
+Description
+F-A1
+Gestion des utilisateurs
+Recherche, consultation, suspension/réactivation des comptes clients et vendeurs.
+F-A2
+Validation vendeurs
+Workflow de validation/rejet des demandes d'enrôlement commerçant.
+F-A3
+Gestion des catégories
+Création/édition de l'arborescence des catégories de produits.
+F-A4
+Modération des signalements
+Traitement des avis signalés, des faux profils, des contenus inappropriés.
+F-A5
+Statistiques & analytics
+Utilisateurs actifs, recherches récurrentes, commerces les plus consultés, exports CSV.
+F-A6
+Notifications système
+Diffusion de notifications push ciblées ou globales.
+F-A7
+Gestion des configurations
+Paramétrage des rayons par défaut, catégories système, versions applicatives minimales.
+F-A8
+Gestion des rôles (RBAC)
+Attribution de rôles et permissions aux comptes administrateurs.
+
+4. Modèles d'abonnement vendeurs
+Afin de financer la plateforme et de proposer une offre progressive aux commerçants, Miagbo propose quatre formules d'abonnement pour l'Espace Pro (interface vendeur). Chaque formule donne accès à un socle commun de fonctionnalités (enrôlement, fiche vendeur, statut ouvert/fermé) et se différencie par la durée d'engagement, le niveau de visibilité et les services associés.
+4.1. Grille tarifaire
+Offre
+Durée
+Tarif
+Positionnement
+Découverte
+1 mois
+Gratuit
+Formule d'essai pour tester la plateforme sans engagement.
+Essentiel
+3 mois
+1 500 FCFA
+Formule d'entrée pour les vendeurs réguliers.
+Croissance
+6 mois
+3 000 FCFA
+Formule intermédiaire, meilleur rapport visibilité/prix.
+Performance
+12 mois
+5 000 FCFA
+Formule annuelle, visibilité maximale et avantages exclusifs.
+
+4.2. Détail des offres et avantages
+Offre Découverte — Gratuite (1 mois)
+Offre d'essai automatiquement proposée à tout nouveau vendeur lors de son inscription, afin de lui permettre de découvrir la plateforme.
+Fiche vendeur visible dans les résultats de recherche géolocalisée.
+Catalogue limité à 10 produits.
+Gestion du statut « Ouvert » /« Fermé » et des horaires.
+Réception et réponse aux avis clients.
+Statistiques de base (nombre de vues de la fiche).
+Offre Essentiel — 3 mois à 1 500 FCFA
+Formule destinée aux vendeurs souhaitant une présence continue sur une durée courte.
+Tous les avantages de l'offre Découverte.
+Catalogue étendu jusqu'à 30 produits.
+Badge « Vendeur vérifié » sur la fiche.
+Statistiques enrichies (vues, recherches ayant mené à la fiche).
+Support client prioritaire par e-mail.
+Offre Croissance — 6 mois à 3 000 FCFA
+Formule intermédiaire pensée pour les commerçants en phase de développement de leur clientèle.
+Tous les avantages de l'offre Essentiel.
+Catalogue de produits illimité.
+Meilleur classement dans les résultats de recherche (priorité d'affichage à distance égale).
+Mise en avant ponctuelle dans les notifications push aux clients à proximité (1 fois par mois).
+Accès au tableau de bord statistique avancé (évolution de la note moyenne, tendances de recherche).
+Offre Performance — 12 mois à 5 000 FCFA
+Formule annuelle la plus avantageuse, réservée aux vendeurs souhaitant une visibilité maximale toute l'année.
+Tous les avantages de l'offre Croissance.
+Badge « Vendeur Premium » distinctif sur la fiche et dans les résultats de recherche.
+Positionnement prioritaire (« top de liste ») dans son rayon de proximité.
+Mise en avant dans les notifications push aux clients à proximité (illimitée).
+Accès anticipé aux nouvelles fonctionnalités (module d'itinéraire, promotions, etc.).
+Accompagnement personnalisé et support client dédié.
+Tarif préférentiel garanti lors du renouvellement de l'abonnement.
+
+4.3. Règles de gestion des abonnements
+À l'expiration d'un abonnement payant, le compte vendeur bascule automatiquement en offre Découverte (fonctionnalités limitées), sans suppression des données.
+Le vendeur est notifié par e-mail/notification push 7 jours puis 1 jour avant l'échéance de son abonnement.
+Le changement de formule (upgrade) est possible à tout moment ; le solde de l'abonnement en cours est calculé au prorata.
+Les paiements d'abonnement sont gérés via les moyens de paiement locaux (Mobile Money) et/ou carte bancaire, intégrés dans l'Espace Pro.
+Le back-office administrateur permet de suivre l'historique des abonnements, les revenus générés et les taux de renouvellement par formule.
+
+4.4. Impacts techniques
+La gestion des abonnements nécessite l'ajout des éléments suivants à l'architecture fonctionnelle et technique :
+Nouvelle entité « Abonnement » liée au Vendeur (formule, date de début, date d'expiration, statut, historique des paiements).
+Intégration d'un service de paiement (agrégateur Mobile Money / carte bancaire) et gestion sécurisée des transactions.
+Tâche planifiée (cron job) de vérification quotidienne des expirations d'abonnement et de rétrogradation automatique vers l'offre Découverte.
+Règles de priorité d'affichage dans le moteur de recherche géolocalisée, pondérées selon la formule d'abonnement active.
+Écrans dédiés dans l'Espace Pro (choix de la formule, paiement, historique de facturation) et dans le back-office (suivi des revenus).
+
+5. Architecture technique
+5.1. Vue d'ensemble de l'architecture
+L'architecture retenue est une architecture en couches, client-serveur, orientée API REST, permettant de mutualiser un back-end unique pour les trois interfaces (client mobile, client web, back-office).
+Couche
+Description
+Couche présentation
+Application mobile (Android/iOS) + application web responsive + back-office web. Consomment exclusivement l'API REST/GraphQL exposée par le back-end.
+Couche API / Services
+API REST sécurisée (HTTPS + JWT), organisée en microservices ou modules : Utilisateurs, Vendeurs, Recherche/Géolocalisation, Avis, Notifications, Administration.
+Couche données
+Base de données relationnelle (PostgreSQL + extension PostGIS pour la géolocalisation) et cache mémoire (Redis) pour les recherches fréquentes.
+Couche infrastructure
+Hébergement cloud (conteneurs Docker orchestrés), CDN pour les médias, stockage objet pour les images (S3-compatible).
+Services externes
+Fournisseur de cartographie (Google Maps Platform ou Mapbox), service de notifications push (Firebase Cloud Messaging), service d'envoi SMS/OTP, service d'e-mailing transactionnel.
+
+5.2. Schéma d'architecture logique
+Représentation textuelle des flux principaux :
+[App Mobile Android/iOS] et [App Web Client] ──HTTPS/REST──▶ [API Gateway]
+[Espace Vendeur Web] ──HTTPS/REST──▶ [API Gateway]
+[Back-Office Admin Web] ──HTTPS/REST──▶ [API Gateway]
+[API Gateway] ──▶ [Service Auth] / [Service Utilisateurs] / [Service Vendeurs] / [Service Recherche-Géoloc] / [Service Avis] / [Service Notifications] / [Service Admin]
+[Services] ──▶ [Base de données PostgreSQL + PostGIS] et [Cache Redis]
+[Services] ──▶ [Stockage objet (images/médias)] et [CDN]
+[Service Notifications] ──▶ [Firebase Cloud Messaging] ──▶ [Apps mobiles]
+
+5.3. Stack technologique proposée
+Composant
+Technologie recommandée
+Application mobile
+Flutter (Dart) ou React Native — développement cross-platform Android/iOS à partir d'une base de code unique.
+Application web (client & vendeur)
+React.js (ou Next.js) avec TypeScript, design responsive (mobile-first).
+Back-office administration
+React.js (ou Vue.js) + bibliothèque de composants d'administration (Ant Design / MUI).
+Backend / API
+Node.js (NestJS) ou alternative Django REST Framework (Python) — API REST documentée en OpenAPI/Swagger.
+Base de données
+PostgreSQL avec extension PostGIS (requêtes géospatiales : recherche par rayon, distances).
+Cache
+Redis (mise en cache des recherches géolocalisées fréquentes, gestion des sessions).
+Authentification
+JWT (access + refresh token), OAuth2 pour connexion via réseaux sociaux.
+Cartographie / Géolocalisation
+Google Maps Platform (Places, Geocoding, Maps SDK) ou Mapbox.
+Notifications push
+Firebase Cloud Messaging (FCM).
+Stockage médias
+Service compatible S3 (Amazon S3, Cloudflare R2 ou équivalent) + CDN.
+Hébergement / Infrastructure
+Conteneurisation Docker, orchestration Kubernetes ou solution PaaS (AWS ECS, Render, DigitalOcean App Platform).
+CI/CD
+GitHub Actions ou GitLab CI pour l'intégration et le déploiement continus.
+Monitoring & logs
+Sentry (suivi des erreurs), Grafana + Prometheus ou solution cloud équivalente (logs et métriques).
+
+5.4. Modèle de données (extrait)
+Principales entités du modèle conceptuel de données :
+Entité
+Attributs principaux
+Relations
+Utilisateur
+id, nom, téléphone, e-mail, mot_de_passe_hash, type (client/vendeur/admin), date_creation
+1-N avec Avis, 1-1 avec Vendeur (si type=vendeur)
+Vendeur
+id, id_utilisateur, nom_commerce, description, latitude, longitude, statut_ouverture, note_moyenne
+1-N avec Produit, 1-N avec Avis, 1-N avec HoraireOuverture
+Produit
+id, id_vendeur, nom, description, prix, photo_url, categorie
+N-1 avec Vendeur, N-1 avec Catégorie
+Catégorie
+id, nom, id_parent
+1-N avec Produit
+HoraireOuverture
+id, id_vendeur, jour_semaine, heure_debut, heure_fin
+N-1 avec Vendeur
+Avis
+id, id_utilisateur, id_vendeur, note, commentaire, date, statut_moderation
+N-1 avec Utilisateur, N-1 avec Vendeur
+Notification
+id, id_utilisateur, titre, message, type, lu, date_envoi
+N-1 avec Utilisateur
+Signalement
+id, id_auteur, id_cible, type_cible, motif, statut
+N-1 avec Utilisateur
+Abonnement
+id, id_vendeur, formule, date_debut, date_expiration, statut, montant
+N-1 avec Vendeur
+
+5.5. Spécifications de l'API
+L'API sera documentée selon la spécification OpenAPI 3.0 et exposera notamment les points d'entrée suivants (extrait non exhaustif) :
+Méthode
+Endpoint
+Description
+POST
+/api/v1/auth/register
+Inscription d'un nouvel utilisateur (client ou vendeur).
+POST
+/api/v1/auth/login
+Authentification et émission des tokens JWT.
+GET
+/api/v1/vendors/search
+Recherche géolocalisée de vendeurs (paramètres : mot-clé, lat, lng, rayon, statut).
+GET
+/api/v1/vendors/{id}
+Détail d'une fiche vendeur (catalogue, avis, horaires).
+POST
+/api/v1/vendors
+Création d'un profil vendeur (espace pro).
+PATCH
+/api/v1/vendors/{id}/status
+Mise à jour du statut ouvert/fermé en temps réel.
+POST
+/api/v1/vendors/{id}/products
+Ajout d'un produit au catalogue d'un vendeur.
+POST
+/api/v1/reviews
+Dépôt d'un avis sur un vendeur.
+GET
+/api/v1/subscriptions/plans
+Liste des formules d'abonnement disponibles (tarifs, durées, avantages).
+POST
+/api/v1/vendors/{id}/subscriptions
+Souscription ou changement de formule d'abonnement pour un vendeur.
+GET
+/api/v1/admin/users
+Liste et filtrage des utilisateurs (back-office).
+POST
+/api/v1/admin/reports/{id}/resolve
+Traitement d'un signalement.
+
+6. Exigences non fonctionnelles
+Catégorie
+Exigence
+Performance
+Temps de réponse de l'API de recherche géolocalisée < 500 ms pour 95 % des requêtes. Chargement de la fiche vendeur < 2 s en connexion 3G/4G.
+Scalabilité
+Architecture capable de monter en charge horizontalement (ajout d'instances) pour supporter la croissance du nombre de vendeurs et de requêtes.
+Disponibilité
+Taux de disponibilité cible de 99,5 % (hors maintenance planifiée).
+Sécurité
+Chiffrement des données en transit (TLS 1.2+) et au repos, authentification forte (JWT + refresh token), protection contre les injections SQL, XSS, CSRF ; conformité aux principes de protection des données personnelles.
+Compatibilité
+Application mobile compatible Android 8+ et iOS 14+. Application web compatible avec les navigateurs modernes (Chrome, Firefox, Safari, Edge, 2 dernières versions).
+Accessibilité
+Respect des bonnes pratiques d'accessibilité (contrastes, tailles de police adaptatives, navigation au clavier sur le web).
+Localisation / i18n
+Prise en charge du français comme langue principale, architecture prête pour l'ajout d'autres langues.
+Maintenabilité
+Code versionné (Git), documenté, couvert par des tests automatisés, respect de standards de codage (linting, revue de code obligatoire).
+Portabilité des données
+Export possible des données (utilisateurs, vendeurs) au format standard (CSV/JSON) pour sauvegarde ou migration.
+
+6.1. Sécurité et protection des données
+Hachage des mots de passe (bcrypt/argon2), jamais de stockage en clair.
+Politique de mots de passe robustes et limitation des tentatives de connexion (protection brute-force).
+Gestion des consentements et information des utilisateurs sur l'usage de leur géolocalisation.
+Journalisation des accès et des actions sensibles (logs d'audit) sur le back-office.
+Sauvegardes régulières et automatisées de la base de données, avec procédure de restauration testée.
+
+7. Gestion de projet
+7.1. Méthodologie
+Le projet sera piloté selon une méthodologie Agile (Scrum), avec des sprints de deux semaines, un backlog priorisé et des points de démonstration réguliers auprès du maître d'ouvrage.
+7.2. Équipe projet type
+Rôle
+Responsabilité
+Chef de projet / Product Owner
+Définition et priorisation du backlog, arbitrages fonctionnels, suivi budgétaire et planning.
+Développeur(se) mobile
+Développement de l'application Android/iOS.
+Développeur(se) web front-end
+Développement des interfaces web client, vendeur et back-office.
+Développeur(se) back-end
+Conception et développement de l'API, de la base de données et des services.
+UI/UX Designer
+Conception des maquettes et de l'expérience utilisateur.
+QA / Testeur(se)
+Élaboration et exécution des plans de tests, recette fonctionnelle.
+DevOps / Ingénieur infrastructure
+Mise en place de l'infrastructure, CI/CD, supervision et sécurité.
+
+7.3. Planning prévisionnel (indicatif)
+Phase
+Durée estimée
+Contenu
+Cadrage & conception
+3 semaines
+Ateliers de cadrage, spécifications détaillées, maquettes UI/UX, validation de l'architecture.
+Développement Sprint 1-2
+4 semaines
+Authentification, modèle de données, API cœur (utilisateurs, vendeurs).
+Développement Sprint 3-4
+4 semaines
+Recherche géolocalisée, fiche vendeur, catalogues produits.
+Développement Sprint 5-6
+4 semaines
+Avis/notation, notifications, back-office d'administration.
+Tests & recette
+3 semaines
+Tests fonctionnels, tests de charge, correction des anomalies.
+Déploiement & mise en production
+2 semaines
+Mise en production, publication sur les stores (Google Play, App Store).
+Stabilisation post-lancement
+4 semaines
+Support renforcé, correctifs, ajustements suite aux premiers retours.
+
+7.4. Livrables attendus
+Document de spécifications fonctionnelles détaillées et maquettes validées.
+Code source versionné (dépôt Git) pour les applications mobiles, web et back-office.
+Documentation technique de l'API (OpenAPI/Swagger).
+Applications publiées sur Google Play Store et Apple App Store.
+Plateforme web et back-office déployés en environnement de production.
+Plan de tests et rapport de recette.
+Documentation d'exploitation et manuel d'administration.
+
+8. Environnements et intégration continue
+Environnement
+Usage
+Développement (dev)
+Environnement local ou cloud dédié aux développeurs, données de test, déploiement automatique à chaque commit sur les branches de fonctionnalités.
+Recette / Staging
+Environnement iso-production utilisé pour les tests fonctionnels et la validation par le maître d'ouvrage avant mise en production.
+Production (prod)
+Environnement final accessible aux utilisateurs, avec surveillance, sauvegardes et procédures de rollback.
+
+La chaîne d'intégration et de déploiement continus (CI/CD) automatisera : l'exécution des tests unitaires et d'intégration, l'analyse statique du code, la construction des artefacts (builds mobile et web) et le déploiement vers les environnements concernés après validation.
+
+9. Tests et recette
+Type de test
+Description
+Tests unitaires
+Vérification isolée des fonctions et composants (backend et frontend), couverture de code cible ≥ 70 %.
+Tests d'intégration
+Vérification des interactions entre modules (API ↔ base de données, API ↔ services externes).
+Tests fonctionnels
+Vérification du respect des spécifications fonctionnelles, sur la base de scénarios utilisateurs (client, vendeur, admin).
+Tests de charge / performance
+Simulation de montée en charge sur la recherche géolocalisée et les endpoints critiques.
+Tests de sécurité
+Tests d'intrusion de base, vérification des contrôles d'accès et des protections standards (OWASP Top 10).
+Tests d'acceptation (recette)
+Validation finale par le maître d'ouvrage sur l'environnement de recette, sur la base d'un cahier de recette dédié.
+
+10. Déploiement et maintenance
+10.1. Mise en production
+Publication des applications mobiles sur Google Play Store et Apple App Store, conformément aux exigences de chaque store.
+Déploiement de la plateforme web et du back-office sur l'infrastructure cloud retenue.
+Mise en place d'un nom de domaine dédié et de certificats SSL/TLS.
+10.2. Maintenance et support
+Maintenance corrective : correction des anomalies détectées après mise en production.
+Maintenance évolutive : ajout de nouvelles fonctionnalités selon la feuille de route.
+Supervision technique continue (disponibilité, performance, sécurité) avec alertes automatiques.
+Mises à jour régulières des dépendances techniques et correctifs de sécurité.
+
+11. Feuille de route (évolutions futures)
+Évolution
+Description
+Module d'itinéraire
+Guidage GPS intégré vers le vendeur sélectionné, directement depuis l'application.
+Commande / Réservation
+Possibilité pour le client de réserver ou commander un produit avant de se déplacer.
+Système de promotions
+Mise en avant, par les vendeurs, d'offres spéciales du jour auprès des clients à proximité.
+Extension à d’autres activités
+Extension vers d’autres activités comme les ateliers de couture, de coiffure, de commerce, etc.
+Programme de fidélité
+Mécanisme de points ou de récompenses pour les clients réguliers.
+
+12. Annexes
+12.1. Glossaire
+Terme
+Définition
+API
+Interface de programmation applicative permettant la communication entre les différentes couches de l'application.
+JWT
+JSON Web Token, format de jeton utilisé pour l'authentification sécurisée des utilisateurs.
+PostGIS
+Extension de PostgreSQL permettant le stockage et l'interrogation de données géospatiales.
+MVP
+Minimum Viable Product : version minimale mais fonctionnelle du produit, permettant une première mise sur le marché.
+CI/CD
+Intégration continue / Déploiement continu : pratiques d'automatisation des tests et des déploiements.
+RBAC
+Role-Based Access Control : gestion des droits d'accès basée sur des rôles utilisateurs.
+
+12.2. Références du document
+Ce cahier des charges technique s'appuie sur la fiche de synthèse projet Asssiooo fournie par le maître d'ouvrage et sera mis à jour au fil des ateliers de cadrage et des décisions techniques validées avec l'équipe projet.
+PARTIE : word/footnotes.xml
+
+
+PARTIE : word/endnotes.xml
+
+
+PARTIE : word/header1.xml
+Miagbo— Cahier des charges technique
+PARTIE : word/footer1.xml
+Page 1 / 1

@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+*.sqlite3
+media/
+staticfiles/
+.coverage
+htmlcov/
+node_modules/
+.expo/
+*.log
+backups/
+test-results/
+playwright-report/

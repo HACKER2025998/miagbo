@@ -1,0 +1,9 @@
+{
+  "requests": 40,
+  "workers": 4,
+  "results_per_search": 6,
+  "p95_ms": 99.58,
+  "max_ms": 114.76,
+  "mean_ms": 76.32,
+  "scope": "Mesure locale indicative ; aucun SLA de production validé."
+}

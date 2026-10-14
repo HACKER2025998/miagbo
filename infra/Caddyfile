@@ -1,0 +1,22 @@
+{$DOMAIN} { # Utiliser le domaine choisi par l'exploitant et les certificats automatiques Caddy.
+  request_body { # Borner les uploads avant leur transfert à Django.
+    max_size 6MB # Refuser un corps abusif avant le décodage des images.
+  } # Terminer la limite du corps de requête.
+  encode zstd gzip # Réduire le poids des réponses sur connexion mobile.
+  header { # Ajouter les protections communes aux pages et médias.
+    X-Content-Type-Options nosniff # Empêcher l'interprétation d'une image comme HTML.
+    Referrer-Policy strict-origin-when-cross-origin # Ne pas transmettre un lien de reset complet aux services tiers.
+    Permissions-Policy "geolocation=(self), camera=(), microphone=()" # Limiter les permissions aux usages réellement nécessaires.
+  } # Terminer les en-têtes communs.
+  handle_path /static/* { # Servir les ressources publiques indépendamment de Gunicorn.
+    root * /srv/static # Lire uniquement le volume de collecte.
+    file_server # Fournir CSS, JavaScript et pictogrammes locaux.
+  } # Terminer le chemin des ressources.
+  handle_path /media/* { # Servir les photos déjà vérifiées et réencodées.
+    root * /srv/media # Lire les médias sans permettre une écriture via le proxy.
+    file_server # Ne jamais interpréter un fichier uploadé comme code.
+  } # Terminer le chemin des médias.
+  handle { # Router le reste vers l'application métier.
+    reverse_proxy api:8000 # Transmettre le protocole d'origine via le réseau interne de confiance.
+  } # Terminer le routage API et pages.
+} # Terminer la configuration du domaine.

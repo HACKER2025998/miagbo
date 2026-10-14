@@ -1,0 +1,44 @@
+name: MIAGBO CI # Identifier les vérifications de chaque proposition de changement.
+on: [push, pull_request] # Vérifier les branches et les revues de code.
+jobs: # Séparer les contrôles Python, navigateur et mobile.
+  backend: # Vérifier les règles métier sur SQLite et PostgreSQL/PostGIS.
+    runs-on: ubuntu-latest # Utiliser un runner Linux reproductible.
+    strategy: # Couvrir les deux moteurs officiellement supportés.
+      matrix: {database: [sqlite, postgres]} # Détecter les écarts de géolocalisation entre local et production.
+    services: # Fournir les dépendances de la recette géographique.
+      postgres: # Démarrer une base PostGIS dédiée aux tests.
+        image: postgis/postgis:16-3.5 # Utiliser le même moteur que Compose.
+        env: {POSTGRES_USER: miagbo, POSTGRES_PASSWORD: ci-only-secret, POSTGRES_DB: miagbo} # Isoler les identifiants éphémères du runner.
+        ports: ['5432:5432'] # Exposer la base uniquement au runner de tests.
+        options: --health-cmd "pg_isready -U miagbo" --health-interval 5s --health-timeout 3s --health-retries 20 # Attendre la disponibilité SQL.
+    steps: # Exécuter les vérifications dans l'ordre de dépendance.
+      - uses: actions/checkout@v4 # Lire le commit à vérifier.
+      - uses: actions/setup-python@v5 # Installer la version du runtime conteneurisé.
+        with: {python-version: '3.13'} # Vérifier la compatibilité de production.
+      - run: pip install -r requirements.lock.txt # Reproduire les versions Python validées.
+      - name: Tests et couverture # Imposer les invariants métier et un seuil mesuré.
+        env: # Choisir le moteur selon la matrice de tests.
+          DEBUG: '1' # Garder les diagnostics dans ce runner éphémère.
+          DB_HOST: ${{ matrix.database == 'postgres' && '127.0.0.1' || '' }} # Activer PostGIS uniquement dans sa branche.
+          DB_PASSWORD: ci-only-secret # Fournir le secret éphémère du service CI.
+        run: | # Garder des étapes lisibles dans le log d'intégration.
+          python manage.py check
+          python manage.py makemigrations --check --dry-run
+          coverage run --source=core,config manage.py test
+          coverage report --fail-under=70
+          python manage.py spectacular --file docs/openapi.yaml --validate
+  interfaces: # Vérifier le JavaScript, les parcours navigateur et le projet mobile.
+    runs-on: ubuntu-latest # Utiliser un environnement Linux neuf.
+    steps: # Installer puis vérifier chaque interface.
+      - uses: actions/checkout@v4 # Lire le même commit que les tests backend.
+      - uses: actions/setup-node@v4 # Installer Node compatible avec Expo.
+        with: {node-version: '22'} # Utiliser un runtime LTS.
+      - uses: actions/setup-python@v5 # Fournir le serveur de test des parcours E2E.
+        with: {python-version: '3.13'} # Garder la cohérence avec la production.
+      - run: python -m venv .venv && .venv/bin/pip install -r requirements.lock.txt # Préparer le runtime isolé attendu par les scénarios navigateur.
+      - run: npm ci # Installer la carte et Playwright depuis le lockfile.
+      - run: npm run check:js # Contrôler la syntaxe JavaScript avant les parcours.
+      - run: npx playwright install --with-deps chromium # Préparer le navigateur du runner dédié.
+      - run: npm run test:e2e # Exécuter les parcours desktop et mobile responsive.
+      - run: npm ci --prefix mobile # Installer le client natif depuis son lockfile.
+      - run: npm --prefix mobile run check # Vérifier le typage strict du conteneur mobile.

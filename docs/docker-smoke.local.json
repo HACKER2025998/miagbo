@@ -1,0 +1,17 @@
+{
+  "/api/v1/health/": {
+    "status": 200,
+    "bytes": 15,
+    "csp": false
+  },
+  "/": {
+    "status": 200,
+    "bytes": 3950,
+    "csp": true
+  },
+  "/static/app.js": {
+    "status": 200,
+    "bytes": 85480,
+    "csp": false
+  }
+}

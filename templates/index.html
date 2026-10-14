@@ -1,0 +1,25 @@
+{% load static %} <!-- Charger le résolveur de ressources Django. -->
+<!doctype html> <!-- Utiliser le mode de rendu HTML moderne. -->
+<html lang="fr"> <!-- Annoncer le français aux lecteurs d'écran. -->
+<head> <!-- Déclarer les métadonnées et styles sans données privées. -->
+<meta charset="utf-8"> <!-- Afficher correctement les accents et les noms locaux. -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"> <!-- Adapter l'interface aux écrans et encoches mobiles. -->
+<meta name="theme-color" content="#174b37"> <!-- Harmoniser la barre système avec la marque. -->
+<meta name="description" content="Miagbo vous aide à trouver les commerces et saveurs de votre quartier."> <!-- Décrire la fonction de découverte. -->
+<title>Miagbo · Les saveurs, tout près.</title> <!-- Nommer clairement l'onglet du navigateur. -->
+<link rel="icon" type="image/svg+xml" href="{% static 'icon.svg' %}"> <!-- Utiliser un symbole léger dessiné pour MIAGBO. -->
+<link rel="stylesheet" href="{% static 'vendor/leaflet.css' %}"> <!-- Préparer les styles de carte, sans charger de tuiles à ce stade. -->
+<link rel="stylesheet" href="{% static 'style.css' %}"> <!-- Appliquer les styles responsive de l'application. -->
+</head> <!-- Terminer la configuration du document. -->
+<body> <!-- Afficher la structure commune aux trois espaces. -->
+<a href="#main" class="skip">Aller au contenu</a> <!-- Permettre d'éviter la navigation avec le clavier. -->
+<aside class="sidebar"><a class="brand" href="/" aria-label="Miagbo, accueil"><img src="{% static 'icon.svg' %}" alt="" width="40" height="40">miagbo<span class="brand-dot">.</span></a><p class="nav-caption">LES SAVEURS, TOUT PRÈS</p><nav id="navigation" aria-label="Navigation principale"></nav><div class="sidebar-note"><span class="note-spark">✦</span><h3>Votre quartier a du goût.</h3><p>Faites découvrir votre commerce aux voisins.</p><button class="text-button" data-action="become-vendor">Rejoindre Miagbo <span aria-hidden="true">↗</span></button></div><button class="privacy-link" data-action="privacy">Confidentialité & conditions</button><span class="sidebar-foot">Pensé pour la proximité.</span></aside> <!-- Regrouper marque, navigation et accès commerçant. -->
+<div class="workspace"><header class="topbar"><a class="brand mobile-brand" href="/">miagbo<span class="brand-dot">.</span></a><div class="breadcrumb" id="breadcrumb">Explorer le quartier</div><button class="location-chip" data-action="location" id="location-label">Point de départ : Lomé <span aria-hidden="true">⌄</span></button><div id="session-controls"></div></header><main id="main" tabindex="-1"></main><footer class="footer"><span>© 2026 Miagbo</span><span>Des rencontres locales. Des découvertes qui comptent.</span><button class="text-button" data-action="privacy">Vos données</button></footer></div> <!-- Fournir l'en-tête, la zone dynamique et le pied de page. -->
+<nav id="mobile-nav" class="mobile-nav" aria-label="Navigation mobile"></nav> <!-- Offrir des onglets accessibles sur petit écran. -->
+<dialog id="modal" aria-labelledby="modal-title"><button class="modal-close" data-action="close-modal" aria-label="Fermer la fenêtre">×</button><div id="modal-body"></div></dialog> <!-- Utiliser une fenêtre native avec confinement du focus. -->
+<div id="toast" role="status" aria-live="polite" hidden></div> <!-- Annoncer erreurs et succès sans interrompre la navigation. -->
+<div hidden>{% csrf_token %}</div> <!-- Fournir un jeton initial aux appels protégés. -->
+<script src="{% static 'vendor/leaflet.js' %}" defer></script> <!-- Charger le moteur de carte local avant les interactions. -->
+<script src="{% static 'app.js' %}" defer></script> <!-- Initialiser les écrans une fois le DOM disponible. -->
+</body> <!-- Terminer le contenu visible. -->
+</html> <!-- Fermer le document accessible. -->

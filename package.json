@@ -1,0 +1,8 @@
+{
+  "name": "miagbo-web-checks",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {"test:e2e": "playwright test", "check:js": "node --check static/app.js", "vendor": "node scripts/vendor.mjs"},
+  "dependencies": {"leaflet": "1.9.4"},
+  "devDependencies": {"@playwright/test": "^1.56.0"}
+}

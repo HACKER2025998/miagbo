@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><!-- Définir un pictogramme vectoriel net sur toutes les tailles d'écran. -->
+<rect width="64" height="64" rx="20" fill="#174b37"/><!-- Poser le fond vert de la marque. -->
+<path d="M32 11c-11 0-19 8-19 19 0 15 19 26 19 26s19-11 19-26c0-11-8-19-19-19Z" fill="#e4edb9"/><!-- Relier le symbole à la découverte géographique. -->
+<path d="M23 30h18c-1 8-4 12-9 12s-8-4-9-12Z" fill="#174b37"/><!-- Dessiner un bol pour évoquer la restauration. -->
+<path d="M27 21v5m5-7v7m5-5v5" stroke="#174b37" stroke-width="3" stroke-linecap="round"/><!-- Évoquer la chaleur du repas avec trois traits. -->
+</svg><!-- Fermer le symbole sans ressource externe. -->

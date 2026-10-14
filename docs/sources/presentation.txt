@@ -1,0 +1,55 @@
+SOURCE : Problématique et présentation du sujet.docx
+
+PARTIE : word/document.xml
+PROJET DE DEVELOPPEMENT D’UNE PLATEFORME NUMÉRIQUE DE MISE EN RELATION DIRECTE PAR GÉOLOCALISATION ENTRE CLIENTS ET VENDEURS
+
+Fiche Synthétique du Projet
+Nom de l'application : Miagbo
+Nature du projet : Application mobile (Android & iOS) et plateforme Web
+Cible : Particuliers (clients), petits commerçants localisés, maquis, restaurants et boutiques de quartier
+
+1. Problématique
+Dans nos villes, la découverte de bons coins de restauration (restaurants, maquis, petites douceurs ou encas) relève souvent du parcours du combattant, particulièrement pour les personnes qui arrivent dans un nouveau quartier ou les usagers en déplacement.
+Plusieurs obstacles ont été identifiés :
+Dépendance au bouche-à-oreille et aux réseaux sociaux : La promotion de ces commerces repose souvent sur des canaux informels ou des publications éphémères sur les réseaux sociaux sans géolocalisation précise.
+Invisibilité sur les outils cartographiques classiques : De nombreux commerces informels, petites boutiques de quartier ou maquis locaux ne sont pas référencés sur des plateformes traditionnelles comme Google Maps.
+Perte d'opportunités de vente : Les commerçants ratent une clientèle de passage pourtant située à quelques mètres de leur établissement.
+
+2. Présentation de la Solution Miagbo
+Miagbo est une plateforme numérique de mise en relation directe par géolocalisation entre les clients en recherche active de restauration et les vendeurs de proximité.
+L'objectif principal est de réduire la distance physique et numérique entre l'offre et la demande locale à travers un système basé sur le rayon de proximité.
+
+
+Cas d'usage concret :
+Un groupe de jeunes de passage dans un quartier cherche des gâteaux pour une pause rapide. En ouvrant l'application Miagbo et en saisissant le mot-clé « gâteaux », l'application géolocalise leur position et leur affiche la liste des vendeurs enrôlés proposant des gâteaux dans un rayon paramétrable (ex. 2 km), accompagnés de leur distance exacte et de leur disponibilité.
+
+3. Architecture Fonctionnelle (Les 3 Interfaces)
+A. Interface Client (Mobile & Web)
+Authentification & Profil : Inscription/Connexion simple (numéro de téléphone, email ou réseaux sociaux).
+Moteur de Recherche & Filtrage :
+Recherche par mot-clé (ex: gâteaux, ayimolou, khom, boisson).
+Filtre par rayon de distance (ex: 500 m, 1 km, 2 km).
+Filtre par statut d'ouverture (ouvert actuellement).
+Carte & Géolocalisation : Vue carte dynamique et vue liste des points de vente autour de soi.
+Fiche Vendeur : Consultation des détails du commerce (catalogue de produits, photos, horaires, localisation, itinéraires).
+Système d'Évaluation : Dépôt d'avis et de notes attribuées aux vendeurs (système d'étoiles et commentaires).
+
+B. Interface Vendeur (Commerçant / Espace Pro)
+Enrôlement & Profil Établissement :
+Saisie des informations générales (Nom du commerce, description, contact).
+Configuration du catalogue : Ajout/Modification de produits avec photos, descriptions et prix.
+Plages d'ouverture : Définition des jours et heures d'ouverture/fermeture.
+Géolocalisation du Point de Vente : Capture et enregistrement précis de la position GPS du lieu de vente directement depuis le smartphone du vendeur.
+Gestion du Statut en Temps Réel : Indicateur pour passer le commerce en statut « Ouvert » ou « Fermé ».
+
+C. Interface Administration (Back-Office Web)
+Gestion des Utilisateurs : Modération des comptes clients et validation des comptes vendeurs (modération du contenu).
+Gestion des Catégories & Signalements : Organisation des types de produits/restauration et traitement des avis inappropriés ou faux profils.
+Analyse & Statistiques : Suivi du nombre d'utilisateurs actifs, des recherches récurrentes et des commerces les plus consultés.
+Maintenance & Mises à Jour : Diffusion de notifications push, gestion des configurations système et mises à jour de l'application.
+
+4. Perspectives d'Évolution (Feuille de Route)
+Module d'Itinéraire : Intégration du guidage vers le vendeur via la carte.
+Commande Rapide / Réservation : Option permettant au client de réserver ou commander avant de se déplacer.
+Système de Promotion : Possibilité pour les vendeurs de mettre en avant des offres spéciales du jour auprès des clients à proximité.
+Extension vers d’autres secteurs : Ouverture sur d’autres secteurs d’activités comme la coiffure, la couture, les commerce, etc.

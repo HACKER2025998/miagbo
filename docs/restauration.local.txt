@@ -1,0 +1,7 @@
+Recette du 14 octobre 2026
+Conteneur dédié : miagbo-postgis-test
+Source : miagbo
+Cible distincte et vide : miagbo_restore_test
+Outils : pg_dump -Fc, createdb, pg_restore --no-owner --exit-on-error
+Résultat observé après restauration : 6 commerces, 6 produits, 3 avis ; PostGIS 3.5.2.
+Aucune base de production utilisée.
