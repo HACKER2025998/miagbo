@@ -4,6 +4,9 @@ MIAGBO permet de découvrir des commerces de restauration à proximité d’un p
 
 Cette livraison contient une application exécutable et des tests, pas uniquement des maquettes. Elle constitue une version de travail pour recette. Une mise en production commerciale et une publication dans les stores demandent les configurations et validations décrites ci-dessous. Aucun paiement réel n’est simulé comme réussi.
 
+<img width="1280" height="1501" alt="image" src="https://github.com/user-attachments/assets/a73964d4-229a-4064-85c9-5dcfc8a12f71" />
+
+
 ## 1. Lire le projet dans le bon ordre
 
 | Votre objectif | Document |
